@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useIsLoggedIn } from "../components/utils";
 
 import Scene1 from "../assets/scenes/scene1.png";
@@ -73,30 +73,35 @@ const Films = () => {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
-    <div className="flex mx-auto" style={{ maxWidth: 1200 }}>
+    <div className="flex mx-auto mt-12" style={{ maxWidth: 1200 }}>
       {films == null ? (
         <h2>Loading</h2>
       ) : (
-        <>
-          <div className="flex overflow-hidden min-w-full">
+        <div className="flex flex-col items-center">
+          <div className="flex overflow-hidden min-w-full gap-24">
             {current?.map((film) => (
-              <div key={film.episode_id} className="mr-32">
+              <Link to={`/films/${film.episode_id}`} key={film.episode_id}>
                 <img
                   src={film.img}
+                  className="rounded"
+                  loading="lazy"
                   alt="film.episode_id"
-                  style={{ width: 800, maxWidth: 1000 }}
+                  style={{ width: 500, maxWidth: 1000 }}
                 />
+                <div className="p-2" />
                 <h1>{film.title}</h1>
-              </div>
+              </Link>
             ))}
           </div>
 
+          <div className="p-4" />
+
           <Pagination
-            perPage={FILMS_PER_PAGE}
-            count={films.length}
             paginate={paginate}
+            currentPage={currentPage}
+            pagesCount={films.length / FILMS_PER_PAGE}
           />
-        </>
+        </div>
       )}
     </div>
   );
