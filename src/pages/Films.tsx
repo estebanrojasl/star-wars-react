@@ -1,7 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useIsLoggedIn } from "../components/utils";
 import { Navigate } from "react-router-dom";
+import { useIsLoggedIn } from "../components/utils";
+
+import Scene1 from "../assets/scenes/scene1.png";
+import Scene2 from "../assets/scenes/scene2.png";
+import Scene3 from "../assets/scenes/scene3.png";
+import Scene4 from "../assets/scenes/scene4.png";
+import Scene5 from "../assets/scenes/scene5.png";
+import Scene6 from "../assets/scenes/scene6.png";
+import Pagination from "../components/Pagination";
+
+const SCENE_IMGS = [Scene1, Scene2, Scene3, Scene4, Scene5, Scene6];
+
+const FILMS_PER_PAGE = 2;
 
 type Film = {
   title: string;
@@ -15,7 +27,8 @@ type GetFilmsResponse = {
 };
 
 const Films = () => {
-  const [films, setFilms] = React.useState<Film[]>();
+  const [films, setFilms] = useState<Film[]>();
+  const [currentPage, setCurrentPage] = useState(1);
 
   async function getFilms() {
     try {
@@ -47,20 +60,45 @@ const Films = () => {
     return <Navigate replace to="/login?next=films" />;
   }
 
+  const indexOfLast = currentPage * FILMS_PER_PAGE;
+  const indexOfFirst = indexOfLast - FILMS_PER_PAGE;
+
+  const withImages = films?.map((film, index) => ({
+    ...film,
+    img: SCENE_IMGS[index],
+  }));
+
+  const current = withImages?.slice(indexOfFirst, indexOfLast);
+
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
   return (
-    <>
+    <div className="flex mx-auto" style={{ maxWidth: 1200 }}>
       {films == null ? (
         <h2>Loading</h2>
       ) : (
-        <div>
-          {films?.map((film) => (
-            <div key={film.episode_id}>
-              <h1>{film.title}</h1>
-            </div>
-          ))}
-        </div>
+        <>
+          <div className="flex overflow-hidden min-w-full">
+            {current?.map((film) => (
+              <div key={film.episode_id} className="mr-32">
+                <img
+                  src={film.img}
+                  alt="film.episode_id"
+                  style={{ width: 800, maxWidth: 1000 }}
+                />
+                <h1>{film.title}</h1>
+              </div>
+            ))}
+          </div>
+
+          <Pagination
+            perPage={FILMS_PER_PAGE}
+            count={films.length}
+            paginate={paginate}
+          />
+        </>
       )}
-    </>
+    </div>
   );
 };
 
