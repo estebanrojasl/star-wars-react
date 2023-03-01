@@ -20,7 +20,7 @@ const Header = () => {
           <img src={StarwarsLogo} alt="logo" className="h-16" />
         </Link>
 
-        {isLogged !== true ? (
+        {isLogged !== "true" ? (
           <Link
             to="/login"
             style={{ fontFamily: "'Orbitron', sans-serif", color: "#FFE81F" }}

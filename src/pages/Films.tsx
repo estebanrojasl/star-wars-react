@@ -43,7 +43,7 @@ const Films = () => {
 
   const isLoggedIn = useIsLoggedIn();
 
-  if (isLoggedIn === false) {
+  if (isLoggedIn !== "true") {
     return <Navigate replace to="/login?next=films" />;
   }
 
