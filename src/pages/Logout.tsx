@@ -5,6 +5,7 @@ import Yoda from "../assets/yoda.png";
 const Logout = () => {
   useEffect(() => {
     localStorage.setItem("loggedIn", JSON.stringify(0));
+    window.dispatchEvent(new Event("storage"));
   }, []);
 
   return (

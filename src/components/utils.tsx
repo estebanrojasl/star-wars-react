@@ -19,3 +19,21 @@ export function useIsLoggedIn() {
 
   return isLogged;
 }
+
+// export function useOutsideOfRefClick(ref: React.RefObject<HTMLElement>) {
+//   const [clicked, setClicked] = useState<boolean>();
+//   useEffect(() => {
+//     function handleClickOutside(event: any) {
+//       if (ref.current && !ref.current.contains(event.target)) {
+//         setClicked(true);
+//       }
+//     }
+
+//     document.addEventListener("mousedown", handleClickOutside);
+//     return () => {
+//       document.removeEventListener("mousedown", handleClickOutside);
+//     };
+//   }, [ref]);
+
+//   return [clicked, setClicked];
+// }

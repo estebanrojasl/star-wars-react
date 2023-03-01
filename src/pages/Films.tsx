@@ -52,13 +52,13 @@ const Films = () => {
       {films == null ? (
         <h2>Loading</h2>
       ) : (
-        <h2>
+        <div>
           {films?.map((film) => (
-            <>
+            <div key={film.episode_id}>
               <h1>{film.title}</h1>
-            </>
+            </div>
           ))}
-        </h2>
+        </div>
       )}
     </>
   );
