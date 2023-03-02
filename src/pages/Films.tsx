@@ -131,17 +131,15 @@ const Films = () => {
             </p>
           )}
 
-          <div className="p-4" />
-
-          <div className="self-center">
-            <Pagination
-              paginate={paginate}
-              currentPage={currentPage}
-              pagesCount={films.length / FILMS_PER_PAGE}
-            />
-          </div>
-
           <div className="p-8" />
+
+          <Pagination
+            paginate={paginate}
+            currentPage={currentPage}
+            pagesCount={films.length / FILMS_PER_PAGE}
+          />
+
+          <div className="p-4" />
 
           <button
             style={{ fontFamily: "'Orbitron', sans-serif", color: "#FFE81F" }}

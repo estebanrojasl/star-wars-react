@@ -52,9 +52,9 @@ const ScrollDownBounce = () => {
       <svg
         className="w-6 h-6 text-slate-500"
         fill="none"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
         viewBox="0 0 24 24"
         stroke="currentColor"
       >

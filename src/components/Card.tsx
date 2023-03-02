@@ -62,7 +62,7 @@ const Card = ({
   relatedResourcesUrlArray,
 }: {
   id: number;
-  resourceName: string;
+  resourceName?: string;
   img?: string;
   title: string;
   fields: Fields;
@@ -83,7 +83,11 @@ const Card = ({
 
   return (
     <div className="flex flex-col overflow-hidden" style={{ maxWidth: 550 }}>
-      <Link to={`/${resourceName}/${id}`} key={id}>
+      <Link
+        className={`${resourceName == null ? "pointer-events-none" : null}`}
+        to={`/${resourceName}/${id}`}
+        key={id}
+      >
         <img
           src={img}
           className="rounded"

@@ -10,13 +10,13 @@ const Pagination = ({
   paginate: (number: number) => void;
 }) => {
   return (
-    <nav className="flex">
+    <nav className="flex justify-between">
       {currentPage > 1 && (
         <button
-          style={{ fontSize: 32 }}
+          style={{ fontSize: 18 }}
           onClick={() => paginate(currentPage - 1)}
         >
-          <b>{`<`}</b>
+          {`< Prev`}
         </button>
       )}
 
@@ -24,10 +24,10 @@ const Pagination = ({
 
       {currentPage < pagesCount && (
         <button
-          style={{ fontSize: 32, width: 50 }}
+          style={{ fontSize: 18 }}
           onClick={() => paginate(currentPage + 1)}
         >
-          <b>{`>`}</b>
+          {`Next >`}
         </button>
       )}
     </nav>

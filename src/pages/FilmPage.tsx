@@ -58,7 +58,6 @@ const FilmPage = () => {
             />
             <div className="p-8" />
             <Card
-              resourceName="films"
               id={film.episode_id}
               img={SCENE_IMGS[Math.floor(Math.random() * SCENE_IMGS.length)]}
               title={film.title}
