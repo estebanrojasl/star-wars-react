@@ -48,10 +48,6 @@ const Characters = () => {
         CHAR_IMGS[Math.floor(Math.random() * CHAR_IMGS.length)],
     }));
 
-    //   const filtered = withImages?.filter((character) =>
-    //     character.name.toLowerCase().includes(searchString.toLowerCase())
-    //   );
-
     setFilteredCharacters(withImages);
   }, [characters?.results, searchString]);
 
