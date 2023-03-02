@@ -3,14 +3,20 @@ import { Link } from "react-router-dom";
 import { useAxiosFetch } from "./utils";
 
 interface Field {
-  [k: string]: string;
+  [k: string]: string | number;
 }
 
 type Fields = Field[];
 
 type ResourceType = Record<string, string | number>;
 
-const Character = ({ url }: { url: string }) => {
+const Character = ({
+  url,
+  displayProp,
+}: {
+  url: string;
+  displayProp?: string;
+}) => {
   const { resource } = useAxiosFetch({
     url,
   }) as { resource: ResourceType | undefined };
@@ -19,7 +25,7 @@ const Character = ({ url }: { url: string }) => {
     <span className="px-6 h-1 mr-2 rounded animate-pulse bg-slate-700" />
   ) : (
     <Link to={`/`}>
-      <small>{resource?.name}, </small>
+      <small>{resource[displayProp ?? "name"]}, </small>
     </Link>
   );
 };
@@ -30,17 +36,21 @@ const Card = ({
   id,
   resourceName,
   img,
+  imgOrientation = "horizontal",
   title,
   fields,
   relatedResourceTitle,
+  relatedResourceDisplayProp,
   relatedResourcesUrlArray,
 }: {
-  id: number;
+  id: number | string;
   resourceName?: string;
   img?: string;
+  imgOrientation?: "horizontal" | "vertical";
   title: string;
   fields: Fields;
   relatedResourceTitle?: string;
+  relatedResourceDisplayProp?: string;
   relatedResourcesUrlArray?: string[];
 }) => {
   const [showMoreResources, setShowMoreResources] = useState(false);
@@ -67,7 +77,9 @@ const Card = ({
           className="rounded"
           loading="lazy"
           alt="img"
-          style={{ width: 550 }}
+          style={
+            imgOrientation === "vertical" ? { height: 550 } : { width: 550 }
+          }
         />
         <div className="p-2" />
         <h1>{title}</h1>
@@ -83,7 +95,11 @@ const Card = ({
         <small className="text-slate-400">{relatedResourceTitle}: </small>
 
         {resourcesToDisplay?.map((url) => (
-          <Character key={url} url={url} />
+          <Character
+            key={url}
+            url={url}
+            displayProp={relatedResourceDisplayProp}
+          />
         ))}
 
         {isLongList && showMoreResources === false && (

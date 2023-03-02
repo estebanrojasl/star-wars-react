@@ -27,6 +27,7 @@ const Films = () => {
   }) as { resource: { results: Film[] } | undefined };
 
   const handleSearchChange = (e: any) => {
+    setCurrentPage(1);
     e.target.value === ""
       ? navigate({ search: qs.stringify({ search: undefined }) })
       : navigate({ search: qs.stringify({ search: e.target.value }) });
@@ -96,6 +97,7 @@ const Films = () => {
                     { Director: film.director },
                   ]}
                   relatedResourceTitle="Characters"
+                  relatedResourceDisplayProp="name"
                   relatedResourcesUrlArray={film.characters}
                 />
               ))}

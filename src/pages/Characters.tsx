@@ -1,53 +1,53 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
-import { SCENE_IMGS, useAxiosFetch, useIsLoggedIn } from "../components/utils";
+import { CHAR_IMGS, useAxiosFetch, useIsLoggedIn } from "../components/utils";
 import Card from "../components/Card";
 import Pagination from "../components/Pagination";
-import { Film } from "../components/Types";
+import { Character, Film } from "../components/Types";
 import Loading from "../components/Loading";
 import qs from "qs";
 
-const FILMS_PER_PAGE = 2;
+const CHARS_PER_PAGE = 2;
 
-const Films = () => {
+const Characters = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [filteredFilms, setFilteredFilms] = useState<Film[]>();
+  const [filteredCharacters, setFilteredCharacters] = useState<Character[]>();
 
   const search = qs.parse(location.search, { ignoreQueryPrefix: true }).search;
 
   const searchString = typeof search === "string" ? search : "";
 
-  const { resource: films } = useAxiosFetch({
+  const { resource: characters } = useAxiosFetch({
     url: "https://swapi.dev/api/people",
-  }) as { resource: Film[] | undefined };
+  }) as { resource: { results: Character[] } | undefined };
 
   const handleSearchChange = (e: any) => {
+    setCurrentPage(1);
     e.target.value === ""
       ? navigate({ search: qs.stringify({ search: undefined }) })
       : navigate({ search: qs.stringify({ search: e.target.value }) });
   };
 
   useEffect(() => {
-    const indexOfLast = currentPage * FILMS_PER_PAGE;
-    const indexOfFirst = indexOfLast - FILMS_PER_PAGE;
-    const withImages = films?.map((film, index) => ({
-      ...film,
-      img: SCENE_IMGS[index],
+    const indexOfLast = currentPage * CHARS_PER_PAGE;
+    const indexOfFirst = indexOfLast - CHARS_PER_PAGE;
+    const withImages = characters?.results.map((character, index) => ({
+      ...character,
+      img: CHAR_IMGS[index],
     }));
 
     const filtered = withImages
-      ?.filter((film) =>
-        film.title.toLowerCase().includes(searchString.toLowerCase())
+      ?.filter((character) =>
+        character.name.toLowerCase().includes(searchString.toLowerCase())
       )
       .slice(indexOfFirst, indexOfLast);
 
-    setFilteredFilms(filtered);
-  }, [currentPage, films, searchString]);
+    setFilteredCharacters(filtered);
+  }, [characters?.results, currentPage, searchString]);
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
@@ -64,45 +64,50 @@ const Films = () => {
           className="text-xl"
           style={{ fontFamily: "'Orbitron', sans-serif", color: "#FFE81F" }}
         >
-          Star wars films
+          Star wars characters
         </h1>
+
         <input
           type="text"
           className="bg-transparent border rounded border-gray-400 p-1"
-          placeholder="E.g. Phantom menace"
+          placeholder="E.g. Darth Vader"
           id="search"
           defaultValue={searchString}
           onChange={(e) => handleSearchChange(e)}
         />
       </div>
 
-      <div className="p-4" />
+      <div className="p-8" />
 
-      {films == null ? (
+      {characters?.results == null ? (
         <Loading />
       ) : (
         <div className="flex flex-col">
-          {(filteredFilms ?? []).length > 0 ? (
+          {(filteredCharacters ?? []).length > 0 ? (
             <div className="flex overflow-hidden min-w-full justify-between">
-              {filteredFilms?.map((film) => (
+              {filteredCharacters?.map((character) => (
                 <Card
-                  key={film.episode_id}
-                  resourceName="films"
-                  id={film.episode_id}
-                  img={film.img}
-                  title={film.title}
+                  key={character.name}
+                  resourceName="characters"
+                  id={character.name}
+                  img={character.img}
+                  imgOrientation="vertical"
+                  title={character.name}
                   fields={[
-                    { Released: film.release_date },
-                    { Director: film.director },
+                    { Height: character.height },
+                    { Mass: character.mass },
+                    { "Hair color": character.hair_color },
+                    { "Skin color": character.skin_color },
                   ]}
-                  relatedResourceTitle="Characters"
-                  relatedResourcesUrlArray={film.characters}
+                  relatedResourceTitle="Films"
+                  relatedResourceDisplayProp="title"
+                  relatedResourcesUrlArray={character.films}
                 />
               ))}
             </div>
           ) : (
             <p className="self-center" style={{ minHeight: 300 }}>
-              No films found for this search...
+              No characters found for this search...
             </p>
           )}
 
@@ -111,7 +116,7 @@ const Films = () => {
           <Pagination
             paginate={paginate}
             currentPage={currentPage}
-            pagesCount={films.length / FILMS_PER_PAGE}
+            pagesCount={characters?.results.length / CHARS_PER_PAGE}
           />
 
           <div className="p-4" />
@@ -128,4 +133,4 @@ const Films = () => {
   );
 };
 
-export default Films;
+export default Characters;
