@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
-
-// reuse the Film type from src\pages\Films.tsx
-type Film = {
-  title: string;
-  episode_id: 4;
-  director: string;
-  release_date: "string";
-};
+import { useParams, useNavigate } from "react-router-dom";
+import Card from "../components/Card";
+import Loading from "../components/Loading";
+import { Film } from "../components/Types";
+import { CHAR_IMGS, SCENE_IMGS } from "../components/utils";
 
 type GetFilmsResponse = {
   data: Film;
@@ -16,6 +12,7 @@ type GetFilmsResponse = {
 
 const FilmPage = () => {
   const { filmId } = useParams();
+  const navigate = useNavigate();
 
   const [film, setFilm] = useState<Film>();
 
@@ -48,10 +45,43 @@ const FilmPage = () => {
 
   return (
     <>
-      <h2>{film?.title}</h2>
-      <h2>{film?.episode_id}</h2>
-      <h2>{film?.director}</h2>
-      <h2>{film?.release_date}</h2>
+      {film == null ? (
+        <Loading />
+      ) : (
+        <div className="flex flex-col items-center justify-center">
+          <div className="flex">
+            <img
+              src={CHAR_IMGS[Math.floor(Math.random() * CHAR_IMGS.length)]}
+              alt="storm-trooper"
+              className="px-8 pt-16"
+              style={{ height: 500 }}
+            />
+            <div className="p-8" />
+            <Card
+              resourceName="films"
+              id={film.episode_id}
+              img={SCENE_IMGS[Math.floor(Math.random() * SCENE_IMGS.length)]}
+              title={film.title}
+              fields={[
+                { Released: film.release_date },
+                { Producer: film.producer },
+                { Director: film.director },
+                { "Opening crawl": film.opening_crawl },
+              ]}
+              relatedResourceTitle="Characters"
+              relatedResourcesUrlArray={film.characters}
+            />
+          </div>
+          <div className="p-8" />
+
+          <button
+            style={{ fontFamily: "'Orbitron', sans-serif", color: "#FFE81F" }}
+            onClick={() => navigate(-1)}
+          >
+            Go back
+          </button>
+        </div>
+      )}
     </>
   );
 };

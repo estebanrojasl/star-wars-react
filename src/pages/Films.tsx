@@ -1,32 +1,21 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, Navigate } from "react-router-dom";
-import { useIsLoggedIn } from "../components/utils";
+import { Navigate, useNavigate } from "react-router-dom";
 
-import Scene1 from "../assets/scenes/scene1.png";
-import Scene2 from "../assets/scenes/scene2.png";
-import Scene3 from "../assets/scenes/scene3.png";
-import Scene4 from "../assets/scenes/scene4.png";
-import Scene5 from "../assets/scenes/scene5.png";
-import Scene6 from "../assets/scenes/scene6.png";
+import { SCENE_IMGS, useIsLoggedIn } from "../components/utils";
+import Card from "../components/Card";
 import Pagination from "../components/Pagination";
-
-const SCENE_IMGS = [Scene1, Scene2, Scene3, Scene4, Scene5, Scene6];
+import { Film } from "../components/Types";
+import Loading from "../components/Loading";
 
 const FILMS_PER_PAGE = 2;
-
-type Film = {
-  title: string;
-  episode_id: 4;
-  director: string;
-  release_date: "string";
-};
 
 type GetFilmsResponse = {
   data: { results: Film[] };
 };
 
 const Films = () => {
+  const navigate = useNavigate();
   const [films, setFilms] = useState<Film[]>();
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -78,38 +67,44 @@ const Films = () => {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
-    <div className="flex mx-auto mt-12" style={{ maxWidth: 1200 }}>
+    <div className="flex flex-col mx-auto mt-12" style={{ maxWidth: 1200 }}>
+      <div className="flex justify-between">
+        <h1
+          className="text-xl"
+          style={{ fontFamily: "'Orbitron', sans-serif", color: "#FFE81F" }}
+        >
+          Star wars films
+        </h1>
+        <input
+          type="text"
+          className="bg-transparent border rounded border-gray-400 p-1"
+          placeholder="E.g. Phantom menace"
+          id="search"
+          defaultValue={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+
+      <div className="p-4" />
+
       {films == null ? (
-        <h2>Loading</h2>
+        <Loading />
       ) : (
         <div className="flex flex-col">
-          <div className="flex justify-between">
-            <h1 className="text-xl">Star wars films</h1>
-            <input
-              type="text"
-              className="bg-transparent border rounded border-gray-400 p-1"
-              placeholder="E.g. Phantom menace"
-              id="search"
-              defaultValue={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
-
-          <div className="p-4" />
-
-          <div className="flex overflow-hidden min-w-full gap-24">
+          <div className="flex overflow-hidden min-w-full justify-between">
             {filtered?.map((film) => (
-              <Link to={`/films/${film.episode_id}`} key={film.episode_id}>
-                <img
-                  src={film.img}
-                  className="rounded"
-                  loading="lazy"
-                  alt="film.episode_id"
-                  style={{ width: 500, maxWidth: 1000 }}
-                />
-                <div className="p-2" />
-                <h1>{film.title}</h1>
-              </Link>
+              <Card
+                resourceName="films"
+                id={film.episode_id}
+                img={film.img}
+                title={film.title}
+                fields={[
+                  { Released: film.release_date },
+                  { Director: film.director },
+                ]}
+                relatedResourceTitle="Characters"
+                relatedResourcesUrlArray={film.characters}
+              />
             ))}
           </div>
 
@@ -122,6 +117,15 @@ const Films = () => {
               pagesCount={films.length / FILMS_PER_PAGE}
             />
           </div>
+
+          <div className="p-8" />
+
+          <button
+            style={{ fontFamily: "'Orbitron', sans-serif", color: "#FFE81F" }}
+            onClick={() => navigate("/", { replace: true })}
+          >
+            Go back
+          </button>
         </div>
       )}
     </div>

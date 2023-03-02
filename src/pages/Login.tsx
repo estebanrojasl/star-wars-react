@@ -4,7 +4,7 @@ import qs from "qs";
 
 import users from "../users.json";
 
-import DarthVader from "../assets/darth_vader.png";
+import DarthVader from "../assets/chars/darth_vader.png";
 import { useIsLoggedIn } from "../components/utils";
 
 const Login = () => {
@@ -98,8 +98,6 @@ const Login = () => {
             Login and I won't alter it any further"
           </h2>
 
-          {/* give me your email and password to create a user*/}
-          {/* I FIND YOUR LACK OF FAITH DISTURBING. */}
           <div className="p-6" />
 
           <form id="login-form" onSubmit={onSubmit} className="flex flex-col">

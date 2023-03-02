@@ -14,30 +14,18 @@ const Header = () => {
   const isLogged = useIsLoggedIn();
 
   return (
-    <header className="p-4 lg:px-16 relative">
+    <header className="p-4 px-16 relative">
       <div className="h-16 flex justify-between items-center">
         <Link to="/">
           <img src={StarwarsLogo} alt="logo" className="h-16" />
         </Link>
 
         <div className="flex items-center">
-          <Link to="/films" style={{ fontFamily: "'Orbitron', sans-serif" }}>
-            Films
-          </Link>
+          <Link to="/films">Films</Link>
           <div className="p-2" />
-          <Link
-            to="/characters"
-            style={{ fontFamily: "'Orbitron', sans-serif" }}
-          >
-            Characters
-          </Link>
+          <Link to="/characters">Characters</Link>
           <div className="p-2" />
-          <Link
-            to="/characters"
-            style={{ fontFamily: "'Orbitron', sans-serif" }}
-          >
-            Vehicles
-          </Link>
+          <Link to="/characters">Vehicles</Link>
 
           <div className="p-6" />
           {isLogged !== "true" ? (
@@ -64,7 +52,7 @@ const Header = () => {
       </div>
 
       {showMenu === true ? (
-        <div className="absolute lg:right-14 right-4 top-18">
+        <div className="absolute right-14 top-18">
           <ul className="space-y-2">
             <li>
               <button

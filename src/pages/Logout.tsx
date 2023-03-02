@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import Yoda from "../assets/yoda.png";
+import Yoda from "../assets/chars/yoda.png";
 
 const Logout = () => {
   useEffect(() => {

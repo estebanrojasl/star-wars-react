@@ -1,6 +1,6 @@
 import React from "react";
-import StormTrooper1 from "../assets/storm_trooper1.png";
-import StormTrooper2 from "../assets/storm_trooper2.png";
+import StormTrooper1 from "../assets/chars/storm_trooper1.png";
+import StormTrooper2 from "../assets/chars/storm_trooper2.png";
 
 const NotFound = () => (
   <div className="flex justify-center items-center">
