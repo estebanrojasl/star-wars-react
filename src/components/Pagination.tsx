@@ -39,22 +39,25 @@ const Pagination = ({
 }) => {
   return (
     <nav className="flex">
-      {/* hide the whole button if notcurrent page */}
-      <button
-        style={{ fontSize: 32, width: 50 }}
-        onClick={() => paginate(currentPage - 1)}
-      >
-        {currentPage > 1 && <b>{`<`}</b>}
-      </button>
+      {currentPage > 1 && (
+        <button
+          style={{ fontSize: 32 }}
+          onClick={() => paginate(currentPage - 1)}
+        >
+          <b>{`<`}</b>
+        </button>
+      )}
 
       <div className="p-4" />
 
-      <button
-        style={{ fontSize: 32, width: 50 }}
-        onClick={() => paginate(currentPage + 1)}
-      >
-        {currentPage < pagesCount && <b>{`>`}</b>}
-      </button>
+      {currentPage < pagesCount && (
+        <button
+          style={{ fontSize: 32, width: 50 }}
+          onClick={() => paginate(currentPage + 1)}
+        >
+          <b>{`>`}</b>
+        </button>
+      )}
     </nav>
   );
 };

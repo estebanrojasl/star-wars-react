@@ -75,11 +75,11 @@ const Login = () => {
     }
   };
 
-  // const isLoggedIn = useIsLoggedIn();
+  const isLoggedIn = useIsLoggedIn();
 
-  // if (isLoggedIn === "true") {
-  //   return <Navigate replace to="/" />;
-  // }
+  if (isLoggedIn === "true") {
+    return <Navigate replace to="/" />;
+  }
 
   return (
     <div className="max-w-2xl mx-auto" style={{ minHeight: 700 }}>

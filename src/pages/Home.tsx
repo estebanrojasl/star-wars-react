@@ -13,17 +13,20 @@ const menuItems = [
 
 const Home = () => {
   return (
-    // add text greeting the user
-    <div className="flex justify-between max-w-2xl mx-auto">
-      {menuItems.map((item) => (
-        <div key={item.name}>
-          <Link to={item.path} className="flex flex-col items-center">
-            <img src={item.icon} alt={item.name} style={{ height: 100 }} />
-            <div className="p-2" />
-            <h2>{item.name}</h2>
-          </Link>
-        </div>
-      ))}
+    <div className="max-w-2xl mx-auto text-center">
+      <h2>Welcome to this starwars page</h2>
+      <div className="p-8" />
+      <div className="flex justify-between">
+        {menuItems.map((item) => (
+          <div key={item.name}>
+            <Link to={item.path} className="flex flex-col items-center">
+              <img src={item.icon} alt={item.name} style={{ height: 100 }} />
+              <div className="p-2" />
+              <h2>{item.name}</h2>
+            </Link>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

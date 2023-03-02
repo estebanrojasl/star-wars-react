@@ -20,24 +20,47 @@ const Header = () => {
           <img src={StarwarsLogo} alt="logo" className="h-16" />
         </Link>
 
-        {/* add link to all pages here */}
-
-        {isLogged !== "true" ? (
-          <Link
-            to="/login"
-            style={{ fontFamily: "'Orbitron', sans-serif", color: "#FFE81F" }}
-          >
-            Login
+        <div className="flex items-center">
+          <Link to="/films" style={{ fontFamily: "'Orbitron', sans-serif" }}>
+            Films
           </Link>
-        ) : (
-          <button
-            ref={wrapperRef}
-            className="flex flex-row items-center justify-between"
-            onClick={() => setShowMenu(!showMenu)}
+          <div className="p-2" />
+          <Link
+            to="/characters"
+            style={{ fontFamily: "'Orbitron', sans-serif" }}
           >
-            <img src={AvatarIcon} alt="avatar" className="rounded-full h-12" />{" "}
-          </button>
-        )}
+            Characters
+          </Link>
+          <div className="p-2" />
+          <Link
+            to="/characters"
+            style={{ fontFamily: "'Orbitron', sans-serif" }}
+          >
+            Vehicles
+          </Link>
+
+          <div className="p-6" />
+          {isLogged !== "true" ? (
+            <Link
+              to="/login"
+              style={{ fontFamily: "'Orbitron', sans-serif", color: "#FFE81F" }}
+            >
+              Login
+            </Link>
+          ) : (
+            <button
+              ref={wrapperRef}
+              className="flex flex-row items-center justify-between"
+              onClick={() => setShowMenu(!showMenu)}
+            >
+              <img
+                src={AvatarIcon}
+                alt="avatar"
+                className="rounded-full h-12"
+              />{" "}
+            </button>
+          )}
+        </div>
       </div>
 
       {showMenu === true ? (
