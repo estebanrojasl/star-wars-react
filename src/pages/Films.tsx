@@ -37,7 +37,9 @@ const Films = () => {
     const indexOfFirst = indexOfLast - FILMS_PER_PAGE;
     const withImages = resource?.results?.map((film, index) => ({
       ...film,
-      img: SCENE_IMGS[index],
+      img:
+        SCENE_IMGS[index] ??
+        SCENE_IMGS[Math.floor(Math.random() * SCENE_IMGS.length)],
     }));
 
     const filtered = withImages

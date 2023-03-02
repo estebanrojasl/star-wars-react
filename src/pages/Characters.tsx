@@ -43,9 +43,7 @@ const Characters = () => {
 
     const withImages = characters?.results.map((character, index) => ({
       ...character,
-      img:
-        CHAR_IMGS[index] ??
-        CHAR_IMGS[Math.floor(Math.random() * CHAR_IMGS.length)],
+      img: CHAR_IMGS[Math.floor(Math.random() * CHAR_IMGS.length)],
     }));
 
     setFilteredCharacters(withImages);
