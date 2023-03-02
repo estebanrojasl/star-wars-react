@@ -12,6 +12,7 @@ import Char2 from "../assets/chars/darth_maul.png";
 import Char3 from "../assets/chars/darth_vader.png";
 import Char4 from "../assets/chars/storm_trooper1.png";
 import Char5 from "../assets/chars/yoda.png";
+import axios from "axios";
 
 export const SCENE_IMGS = [Scene1, Scene2, Scene3, Scene4, Scene5, Scene6];
 export const CHAR_IMGS = [Char1, Char2, Char3, Char4, Char5];
@@ -32,4 +33,34 @@ export function useIsLoggedIn() {
   }, []);
 
   return isLogged;
+}
+
+export function useAxiosFetch({ url }: { url: string }) {
+  const [resource, setResource] = useState();
+
+  useEffect(() => {
+    async function getResource() {
+      try {
+        const { data } = await axios.get(url, {
+          headers: {
+            Accept: "application/json",
+          },
+        });
+
+        setResource(data);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log("error message: ", error.message);
+          return error.message;
+        } else {
+          console.log("unexpected error: ", error);
+          return "An unexpected error occurred";
+        }
+      }
+    }
+
+    getResource();
+  }, [url]);
+
+  return { resource };
 }

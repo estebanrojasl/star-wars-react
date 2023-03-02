@@ -1,47 +1,17 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Card from "../components/Card";
 import Loading from "../components/Loading";
 import { Film } from "../components/Types";
-import { CHAR_IMGS, SCENE_IMGS } from "../components/utils";
-
-type GetFilmsResponse = {
-  data: Film;
-};
+import { CHAR_IMGS, SCENE_IMGS, useAxiosFetch } from "../components/utils";
 
 const FilmPage = () => {
   const { filmId } = useParams();
   const navigate = useNavigate();
 
-  const [film, setFilm] = useState<Film>();
-
-  useEffect(() => {
-    async function getFilm() {
-      try {
-        const { data } = (await axios.get(
-          `https://swapi.dev/api/films/${filmId}`,
-          {
-            headers: {
-              Accept: "application/json",
-            },
-          }
-        )) as GetFilmsResponse;
-
-        setFilm(data);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log("error message: ", error.message);
-          return error.message;
-        } else {
-          console.log("unexpected error: ", error);
-          return "An unexpected error occurred";
-        }
-      }
-    }
-
-    getFilm();
-  }, [filmId]);
+  const { resource: film } = useAxiosFetch({
+    url: `https://swapi.dev/api/films/${filmId}`,
+  }) as { resource: Film | undefined };
 
   return (
     <>

@@ -1,6 +1,6 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAxiosFetch } from "./utils";
 
 interface Field {
   [k: string]: string;
@@ -10,36 +10,10 @@ type Fields = Field[];
 
 type ResourceType = Record<string, string | number>;
 
-type GetResourceResponse = {
-  data: ResourceType;
-};
-
 const Character = ({ url }: { url: string }) => {
-  const [resource, setResource] = useState<ResourceType>();
-
-  useEffect(() => {
-    async function getResource() {
-      try {
-        const { data } = (await axios.get(url, {
-          headers: {
-            Accept: "application/json",
-          },
-        })) as GetResourceResponse;
-
-        setResource(data);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log("error message: ", error.message);
-          return error.message;
-        } else {
-          console.log("unexpected error: ", error);
-          return "An unexpected error occurred";
-        }
-      }
-    }
-
-    getResource();
-  }, [url]);
+  const { resource } = useAxiosFetch({
+    url,
+  }) as { resource: ResourceType | undefined };
 
   return resource == null ? (
     <span className="px-6 h-1 mr-2 rounded animate-pulse bg-slate-700" />

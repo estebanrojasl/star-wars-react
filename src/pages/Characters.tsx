@@ -22,9 +22,9 @@ const Films = () => {
 
   const searchString = typeof search === "string" ? search : "";
 
-  const { resource } = useAxiosFetch({
-    url: "https://swapi.dev/api/films",
-  }) as { resource: { results: Film[] } | undefined };
+  const { resource: films } = useAxiosFetch({
+    url: "https://swapi.dev/api/people",
+  }) as { resource: Film[] | undefined };
 
   const handleSearchChange = (e: any) => {
     e.target.value === ""
@@ -35,7 +35,7 @@ const Films = () => {
   useEffect(() => {
     const indexOfLast = currentPage * FILMS_PER_PAGE;
     const indexOfFirst = indexOfLast - FILMS_PER_PAGE;
-    const withImages = resource?.results?.map((film, index) => ({
+    const withImages = films?.map((film, index) => ({
       ...film,
       img: SCENE_IMGS[index],
     }));
@@ -47,7 +47,7 @@ const Films = () => {
       .slice(indexOfFirst, indexOfLast);
 
     setFilteredFilms(filtered);
-  }, [currentPage, resource?.results, searchString]);
+  }, [currentPage, films, searchString]);
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
@@ -78,7 +78,7 @@ const Films = () => {
 
       <div className="p-4" />
 
-      {resource?.results == null ? (
+      {films == null ? (
         <Loading />
       ) : (
         <div className="flex flex-col">
@@ -111,7 +111,7 @@ const Films = () => {
           <Pagination
             paginate={paginate}
             currentPage={currentPage}
-            pagesCount={resource?.results.length / FILMS_PER_PAGE}
+            pagesCount={films.length / FILMS_PER_PAGE}
           />
 
           <div className="p-4" />
