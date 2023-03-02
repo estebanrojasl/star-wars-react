@@ -1,6 +1,4 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import Footer from "../components/Footer";
 
 import FilmsIcon from "../assets/icons/swords-white-vector.svg";
 import CharactersIcon from "../assets/icons/r2d2-white-vector.svg";
