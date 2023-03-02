@@ -37,10 +37,12 @@ export function useIsLoggedIn() {
 
 export function useAxiosFetch({ url }: { url: string }) {
   const [resource, setResource] = useState();
+  const [loading, setLoading] = useState<boolean>();
 
   useEffect(() => {
     async function getResource() {
       try {
+        setLoading(true);
         const { data } = await axios.get(url, {
           headers: {
             Accept: "application/json",
@@ -56,11 +58,13 @@ export function useAxiosFetch({ url }: { url: string }) {
           console.log("unexpected error: ", error);
           return "An unexpected error occurred";
         }
+      } finally {
+        setLoading(false);
       }
     }
 
     getResource();
   }, [url]);
 
-  return { resource };
+  return { resource, loading };
 }

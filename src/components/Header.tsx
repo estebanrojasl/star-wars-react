@@ -25,7 +25,7 @@ const Header = () => {
           <div className="p-2" />
           <Link to="/characters">Characters</Link>
           <div className="p-2" />
-          <Link to="/characters">Vehicles</Link>
+          <Link to="/vehicles">Vehicles</Link>
 
           <div className="p-6" />
           {isLogged !== "true" ? (

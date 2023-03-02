@@ -1,55 +1,59 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import qs from "qs";
 
 import { CHAR_IMGS, useAxiosFetch, useIsLoggedIn } from "../components/utils";
 import Card from "../components/Card";
-import Pagination from "../components/Pagination";
-import { Character, Film } from "../components/Types";
+import { Character } from "../components/Types";
 import Loading from "../components/Loading";
-import qs from "qs";
-
-const CHARS_PER_PAGE = 2;
+import PaginationBE from "../components/PaginationBackend";
 
 const Characters = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const [url, setUrl] = useState("https://swapi.dev/api/people");
+
   const [filteredCharacters, setFilteredCharacters] = useState<Character[]>();
 
   const search = qs.parse(location.search, { ignoreQueryPrefix: true }).search;
 
   const searchString = typeof search === "string" ? search : "";
 
-  const { resource: characters } = useAxiosFetch({
-    url: "https://swapi.dev/api/people",
-  }) as { resource: { results: Character[] } | undefined };
+  const { resource: characters, loading } = useAxiosFetch({
+    url,
+  }) as {
+    resource:
+      | { results: Character[]; count: number; next: string; previous: string }
+      | undefined;
+    loading?: boolean;
+  };
 
   const handleSearchChange = (e: any) => {
-    setCurrentPage(1);
     e.target.value === ""
       ? navigate({ search: qs.stringify({ search: undefined }) })
       : navigate({ search: qs.stringify({ search: e.target.value }) });
   };
 
   useEffect(() => {
-    const indexOfLast = currentPage * CHARS_PER_PAGE;
-    const indexOfFirst = indexOfLast - CHARS_PER_PAGE;
+    if (searchString !== "") {
+      console.log("searchString", searchString);
+      setUrl("https://swapi.dev/api/people?search=" + searchString);
+    }
+
     const withImages = characters?.results.map((character, index) => ({
       ...character,
-      img: CHAR_IMGS[index],
+      img:
+        CHAR_IMGS[index] ??
+        CHAR_IMGS[Math.floor(Math.random() * CHAR_IMGS.length)],
     }));
 
-    const filtered = withImages
-      ?.filter((character) =>
-        character.name.toLowerCase().includes(searchString.toLowerCase())
-      )
-      .slice(indexOfFirst, indexOfLast);
+    //   const filtered = withImages?.filter((character) =>
+    //     character.name.toLowerCase().includes(searchString.toLowerCase())
+    //   );
 
-    setFilteredCharacters(filtered);
-  }, [characters?.results, currentPage, searchString]);
-
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+    setFilteredCharacters(withImages);
+  }, [characters?.results, searchString]);
 
   const isLoggedIn = useIsLoggedIn();
 
@@ -83,40 +87,46 @@ const Characters = () => {
         <Loading />
       ) : (
         <div className="flex flex-col">
-          {(filteredCharacters ?? []).length > 0 ? (
-            <div className="flex overflow-hidden min-w-full justify-between">
-              {filteredCharacters?.map((character) => (
-                <Card
-                  key={character.name}
-                  resourceName="characters"
-                  id={character.name}
-                  img={character.img}
-                  imgOrientation="vertical"
-                  title={character.name}
-                  fields={[
-                    { Height: character.height },
-                    { Mass: character.mass },
-                    { "Hair color": character.hair_color },
-                    { "Skin color": character.skin_color },
-                  ]}
-                  relatedResourceTitle="Films"
-                  relatedResourceDisplayProp="title"
-                  relatedResourcesUrlArray={character.films}
-                />
-              ))}
-            </div>
-          ) : (
-            <p className="self-center" style={{ minHeight: 300 }}>
-              No characters found for this search...
-            </p>
-          )}
+          <PaginationBE
+            next={characters?.next}
+            fetchNext={() => setUrl(characters?.next)}
+            prev={characters?.previous}
+            fetchPrev={() => setUrl(characters?.previous)}
+            loading={loading}
+          />
 
           <div className="p-8" />
 
-          <Pagination
-            paginate={paginate}
-            currentPage={currentPage}
-            pagesCount={characters?.results.length / CHARS_PER_PAGE}
+          <div className="grid grid-cols-2 gap-24">
+            {filteredCharacters?.map((character) => (
+              <Card
+                key={character.name}
+                resourceName="characters"
+                id={character.name}
+                img={character.img}
+                imgOrientation="vertical"
+                title={character.name}
+                fields={[
+                  { Height: character.height },
+                  { Mass: character.mass },
+                  { "Hair color": character.hair_color },
+                  { "Skin color": character.skin_color },
+                ]}
+                relatedResourceTitle="Films"
+                relatedResourceDisplayProp="title"
+                relatedResourcesUrlArray={character.films}
+              />
+            ))}
+          </div>
+
+          <div className="p-8" />
+
+          <PaginationBE
+            next={characters?.next}
+            fetchNext={() => setUrl(characters?.next)}
+            prev={characters?.previous}
+            fetchPrev={() => setUrl(characters?.previous)}
+            loading={loading}
           />
 
           <div className="p-4" />

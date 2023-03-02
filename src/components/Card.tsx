@@ -66,7 +66,7 @@ const Card = ({
       : relatedResourcesUrlArray;
 
   return (
-    <div className="flex flex-col overflow-hidden" style={{ maxWidth: 550 }}>
+    <div className="flex flex-col overflow-hidden" style={{ width: 550 }}>
       <Link
         className={`${resourceName == null ? "pointer-events-none" : null}`}
         to={`/${resourceName}/${id}`}
