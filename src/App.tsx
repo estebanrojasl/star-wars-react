@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Routes as Switch,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter, Routes as Switch, Route } from "react-router-dom";
 import Header from "./components/Header";
 
 import Home from "./pages/Home";
@@ -19,7 +15,7 @@ import "./App.css";
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <Header />
       <Switch>
         <Route path="/" element={<Home />} />
@@ -31,7 +27,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Switch>
       <Footer />
-    </Router>
+    </BrowserRouter>
   );
 }
 
