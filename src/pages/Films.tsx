@@ -107,23 +107,29 @@ const Films = () => {
         <Loading />
       ) : (
         <div className="flex flex-col">
-          <div className="flex overflow-hidden min-w-full justify-between">
-            {filteredFilms?.map((film) => (
-              <Card
-                key={film.episode_id}
-                resourceName="films"
-                id={film.episode_id}
-                img={film.img}
-                title={film.title}
-                fields={[
-                  { Released: film.release_date },
-                  { Director: film.director },
-                ]}
-                relatedResourceTitle="Characters"
-                relatedResourcesUrlArray={film.characters}
-              />
-            ))}
-          </div>
+          {(filteredFilms ?? []).length > 0 ? (
+            <div className="flex overflow-hidden min-w-full justify-between">
+              {filteredFilms?.map((film) => (
+                <Card
+                  key={film.episode_id}
+                  resourceName="films"
+                  id={film.episode_id}
+                  img={film.img}
+                  title={film.title}
+                  fields={[
+                    { Released: film.release_date },
+                    { Director: film.director },
+                  ]}
+                  relatedResourceTitle="Characters"
+                  relatedResourcesUrlArray={film.characters}
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="self-center" style={{ minHeight: 300 }}>
+              No films found for this search...
+            </p>
+          )}
 
           <div className="p-4" />
 

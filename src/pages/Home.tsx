@@ -46,6 +46,24 @@ const Crawl = () => {
   );
 };
 
+const ScrollDownBounce = () => {
+  return (
+    <div className="animate-bounce bg-slate-800 p-2 w-10 h-10 ring-1 ring-slate-200/20 shadow-lg rounded-full">
+      <svg
+        className="w-6 h-6 text-slate-500"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+      </svg>
+    </div>
+  );
+};
+
 const Home = () => {
   return (
     <>
@@ -57,10 +75,23 @@ const Home = () => {
           maxWidth: "100%",
         }}
       >
-        <Crawl />{" "}
+        <Crawl />
       </div>
-      <div className="max-w-2xl mx-auto text-center">
-        <div className="flex justify-between">
+      <div className="flex flex-col items-center max-w-2xl p-8 mx-auto text-center">
+        <ScrollDownBounce />
+        <div className="p-6" />
+
+        <h1
+          style={{
+            fontSize: 20,
+            fontFamily: "'Orbitron', sans-serif",
+          }}
+        >
+          Welcome to our Star Wars website! May the Force be with you as you
+          explore the universe of Star Wars.
+        </h1>
+        <div className="p-6" />
+        <div className="flex gap-32">
           {menuItems.map((item) => (
             <div key={item.name}>
               <Link to={item.path} className="flex flex-col items-center">
@@ -71,6 +102,10 @@ const Home = () => {
             </div>
           ))}
         </div>
+        <div className="p-8" />
+        <small className="p-8 text-slate-500">
+          Copyright © 2023 Esteban Rojas
+        </small>
       </div>
     </>
   );
