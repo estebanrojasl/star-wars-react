@@ -14,7 +14,7 @@ const Header = () => {
   const isLogged = useIsLoggedIn();
 
   return (
-    <header className="p-4 px-16 relative">
+    <header className="p-4 px-16 relative bg-black z-10">
       <div className="h-16 flex justify-between items-center">
         <Link to="/">
           <img src={StarwarsLogo} alt="logo" className="h-16" />
