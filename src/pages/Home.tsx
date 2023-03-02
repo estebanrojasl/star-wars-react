@@ -13,6 +13,7 @@ const menuItems = [
 
 const Home = () => {
   return (
+    // add text greeting the user
     <div className="flex justify-between max-w-2xl mx-auto">
       {menuItems.map((item) => (
         <div key={item.name}>

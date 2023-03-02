@@ -20,6 +20,8 @@ const Header = () => {
           <img src={StarwarsLogo} alt="logo" className="h-16" />
         </Link>
 
+        {/* add link to all pages here */}
+
         {isLogged !== "true" ? (
           <Link
             to="/login"

@@ -39,6 +39,7 @@ const Pagination = ({
 }) => {
   return (
     <nav className="flex">
+      {/* hide the whole button if notcurrent page */}
       <button
         style={{ fontSize: 32, width: 50 }}
         onClick={() => paginate(currentPage - 1)}
