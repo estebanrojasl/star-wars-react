@@ -63,7 +63,7 @@ const Card = ({
 }: {
   id: number;
   resourceName: string;
-  img: string;
+  img?: string;
   title: string;
   fields: Fields;
   relatedResourceTitle?: string;
@@ -94,7 +94,7 @@ const Card = ({
         <div className="p-2" />
         <h1>{title}</h1>
         {fields.map((field) => (
-          <p key={field[0]}>
+          <p key={Object.keys(field)[0]}>
             <small className="text-slate-400">{Object.keys(field)[0]}: </small>
             <small>{field[Object.keys(field)[0]]}</small>
           </p>

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 import { SCENE_IMGS, useIsLoggedIn } from "../components/utils";
 import Card from "../components/Card";
 import Pagination from "../components/Pagination";
 import { Film } from "../components/Types";
 import Loading from "../components/Loading";
+import qs from "qs";
 
 const FILMS_PER_PAGE = 2;
 
@@ -16,9 +17,15 @@ type GetFilmsResponse = {
 
 const Films = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [films, setFilms] = useState<Film[]>();
   const [currentPage, setCurrentPage] = useState(1);
-  const [search, setSearch] = useState("");
+  const [filteredFilms, setFilteredFilms] = useState<Film[]>();
+
+  const search = qs.parse(location.search, { ignoreQueryPrefix: true }).search;
+
+  const searchString = typeof search === "string" ? search : "";
 
   async function getFilms() {
     try {
@@ -44,27 +51,36 @@ const Films = () => {
     getFilms();
   }, []);
 
+  const handleSearchChange = (e: any) => {
+    e.target.value === ""
+      ? navigate({ search: qs.stringify({ search: undefined }) })
+      : navigate({ search: qs.stringify({ search: e.target.value }) });
+  };
+
+  useEffect(() => {
+    const indexOfLast = currentPage * FILMS_PER_PAGE;
+    const indexOfFirst = indexOfLast - FILMS_PER_PAGE;
+    const withImages = films?.map((film, index) => ({
+      ...film,
+      img: SCENE_IMGS[index],
+    }));
+
+    const filtered = withImages
+      ?.filter((film) =>
+        film.title.toLowerCase().includes(searchString.toLowerCase())
+      )
+      .slice(indexOfFirst, indexOfLast);
+
+    setFilteredFilms(filtered);
+  }, [currentPage, films, searchString]);
+
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
   const isLoggedIn = useIsLoggedIn();
 
   if (isLoggedIn !== "true") {
     return <Navigate replace to="/login?next=films" />;
   }
-
-  const indexOfLast = currentPage * FILMS_PER_PAGE;
-  const indexOfFirst = indexOfLast - FILMS_PER_PAGE;
-
-  const withImages = films?.map((film, index) => ({
-    ...film,
-    img: SCENE_IMGS[index],
-  }));
-
-  const current = withImages?.slice(indexOfFirst, indexOfLast);
-
-  const filtered = current?.filter((film) => {
-    return film.title.toLowerCase().includes(search.toLowerCase());
-  });
-
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
     <div className="flex flex-col mx-auto mt-12" style={{ maxWidth: 1200 }}>
@@ -80,8 +96,8 @@ const Films = () => {
           className="bg-transparent border rounded border-gray-400 p-1"
           placeholder="E.g. Phantom menace"
           id="search"
-          defaultValue={search}
-          onChange={(e) => setSearch(e.target.value)}
+          defaultValue={searchString}
+          onChange={(e) => handleSearchChange(e)}
         />
       </div>
 
@@ -92,8 +108,9 @@ const Films = () => {
       ) : (
         <div className="flex flex-col">
           <div className="flex overflow-hidden min-w-full justify-between">
-            {filtered?.map((film) => (
+            {filteredFilms?.map((film) => (
               <Card
+                key={film.episode_id}
                 resourceName="films"
                 id={film.episode_id}
                 img={film.img}
