@@ -108,7 +108,7 @@ const Login = () => {
             <input
               type="text"
               className="bg-transparent border rounded border-gray-400 p-1"
-              placeholder="E.g: user1@sw.com"
+              placeholder="E.g. user1@sw.com"
               id="username"
               defaultValue={username}
               onChange={(e) => onUserNameChange(e)}

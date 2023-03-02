@@ -29,6 +29,7 @@ type GetFilmsResponse = {
 const Films = () => {
   const [films, setFilms] = useState<Film[]>();
   const [currentPage, setCurrentPage] = useState(1);
+  const [search, setSearch] = useState("");
 
   async function getFilms() {
     try {
@@ -70,6 +71,10 @@ const Films = () => {
 
   const current = withImages?.slice(indexOfFirst, indexOfLast);
 
+  const filtered = current?.filter((film) => {
+    return film.title.toLowerCase().includes(search.toLowerCase());
+  });
+
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
@@ -77,9 +82,23 @@ const Films = () => {
       {films == null ? (
         <h2>Loading</h2>
       ) : (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col">
+          <div className="flex justify-between">
+            <h1 className="text-xl">Star wars films</h1>
+            <input
+              type="text"
+              className="bg-transparent border rounded border-gray-400 p-1"
+              placeholder="E.g. Phantom menace"
+              id="search"
+              defaultValue={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+
+          <div className="p-4" />
+
           <div className="flex overflow-hidden min-w-full gap-24">
-            {current?.map((film) => (
+            {filtered?.map((film) => (
               <Link to={`/films/${film.episode_id}`} key={film.episode_id}>
                 <img
                   src={film.img}
@@ -96,11 +115,13 @@ const Films = () => {
 
           <div className="p-4" />
 
-          <Pagination
-            paginate={paginate}
-            currentPage={currentPage}
-            pagesCount={films.length / FILMS_PER_PAGE}
-          />
+          <div className="self-center">
+            <Pagination
+              paginate={paginate}
+              currentPage={currentPage}
+              pagesCount={films.length / FILMS_PER_PAGE}
+            />
+          </div>
         </div>
       )}
     </div>

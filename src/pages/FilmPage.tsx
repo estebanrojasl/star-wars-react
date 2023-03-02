@@ -19,32 +19,32 @@ const FilmPage = () => {
 
   const [film, setFilm] = useState<Film>();
 
-  async function getFilm() {
-    try {
-      const { data } = (await axios.get(
-        `https://swapi.dev/api/films/${filmId}`,
-        {
-          headers: {
-            Accept: "application/json",
-          },
-        }
-      )) as GetFilmsResponse;
+  useEffect(() => {
+    async function getFilm() {
+      try {
+        const { data } = (await axios.get(
+          `https://swapi.dev/api/films/${filmId}`,
+          {
+            headers: {
+              Accept: "application/json",
+            },
+          }
+        )) as GetFilmsResponse;
 
-      setFilm(data);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log("error message: ", error.message);
-        return error.message;
-      } else {
-        console.log("unexpected error: ", error);
-        return "An unexpected error occurred";
+        setFilm(data);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log("error message: ", error.message);
+          return error.message;
+        } else {
+          console.log("unexpected error: ", error);
+          return "An unexpected error occurred";
+        }
       }
     }
-  }
 
-  useEffect(() => {
     getFilm();
-  }, []);
+  }, [filmId]);
 
   return (
     <>
