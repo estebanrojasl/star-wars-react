@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# Public url github pages
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+https://estebanrojasl.github.io/star-wars-react/
 
 ## Available Scripts
 
