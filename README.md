@@ -19,5 +19,5 @@ You will also see any lint errors in the console.
 Click on any resource you want to see
 Login if you are asked to
 
-- username: user1@sw.com
-- password: test
+- username: `user1@sw.com`
+- password: `test`
