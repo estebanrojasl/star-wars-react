@@ -17,7 +17,7 @@ You will also see any lint errors in the console.
 ## How to get started
 
 Click on any resource you want to see
-Login if you are asked to
+Login if you are asked to or create a new user
 
 - username: `user1@sw.com`
 - password: `test`
