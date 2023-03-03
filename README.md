@@ -16,6 +16,7 @@ You will also see any lint errors in the console.
 
 ## How to get started
 
+Open the link on your browser
 Click on any resource you want to see
 Login if you are asked to or create a new user
 
