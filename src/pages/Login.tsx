@@ -1,11 +1,11 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, useContext } from "react";
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
 import qs from "qs";
 
 import users from "../users.json";
 
 import DarthVader from "../assets/chars/darth_vader.png";
-import { useIsLoggedIn } from "../components/utils";
+import { SessionContext } from "../App";
 
 const Login = () => {
   const [signUpFlow, setSignUpFlow] = React.useState<boolean>(false);
@@ -16,6 +16,8 @@ const Login = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  const isLoggedIn = useContext(SessionContext);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -74,8 +76,6 @@ const Login = () => {
       setWrongPassword(false);
     }
   };
-
-  const isLoggedIn = useIsLoggedIn();
 
   if (isLoggedIn === "true") {
     return <Navigate replace to="/" />;
